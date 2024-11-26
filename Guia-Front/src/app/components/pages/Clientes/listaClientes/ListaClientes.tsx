@@ -82,7 +82,7 @@ const ListaClientes = () => {
   const [clientes, setClientes] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [formValues, setFormValues] = useState({
-    
+    numero_identificacion: "",
     nombre_cliente: "",
     email_cliente: "",
     celular_cliente: "",
@@ -113,7 +113,7 @@ const ListaClientes = () => {
     setSelectedCliente(cliente);
     if (cliente) {
       setFormValues({
-        
+        numero_identificacion: cliente.numero_identificacion,
         nombre_cliente: cliente.nombre_cliente,
         email_cliente: cliente.email_cliente,
         celular_cliente: cliente.celular_cliente,
@@ -121,7 +121,7 @@ const ListaClientes = () => {
       setActionType('update');
     } else {
       setFormValues({
-        
+        numero_identificacion: "",
         nombre_cliente: "",
         email_cliente: "",
         celular_cliente: "",
@@ -177,14 +177,14 @@ const ListaClientes = () => {
 
   const handleActivate = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:2000/api/clientes/active/${id}`, {method: "PUT"});
+      const response = await fetch(`http://localhost:2000/api/clientes/active/${id}`, { method: "PUT" });
       // Si todo sale bien, volvemos a cargar los clientes
       fetchClientes();
     } catch (error) {
       console.error("Error al activar el cliente:", error);
     }
   };
-  
+
 
   const handleDeactivate = async (id: string) => {
     try {
@@ -229,87 +229,94 @@ const ListaClientes = () => {
           Crear Cliente
         </Button>
         <Grid container spacing={4}>
-  {clientes.map((cliente: any) => (
-    <Grid item xs={12} md={6} key={cliente._id}>
-      <StyledCard>
-        <CardContent>
-          <Typography variant="h6" component="div" gutterBottom>
-            {cliente.nombre_cliente}
-          </Typography>
-          <Typography variant="body2" color="textSecondary">
-            Email: {cliente.email_cliente}
-          </Typography>
-          <Typography variant="body2" color="textSecondary">
-            Celular: {cliente.celular_cliente}
-          </Typography>
-          <Typography 
-            variant="body2" 
-            style={{ 
-              color: cliente.activo_cliente ? "#4caf50" : "#f44336", // Verde si está activo, rojo si está inactivo
-              fontWeight: "bold"
-            }}
-          >
-            {cliente.activo_cliente ? "Activo" : "Desactivado"}
-          </Typography>
-          <UpdateButton onClick={() => handleOpenModal(cliente)}>
-            Actualizar
-          </UpdateButton>
-          {cliente.activo_cliente ? (
-            <DeactivateButton onClick={() => handleDeactivate(cliente._id)}>
-              Desactivar
-            </DeactivateButton>
-          ) : (
-            <ActivateButton onClick={() => handleActivate(cliente._id)}>
-              Activar
-            </ActivateButton>
-          )}
-          <DeleteButton onClick={() => handleDelete(cliente._id)}>
-            Eliminar
-          </DeleteButton>
-        </CardContent>
-      </StyledCard>
-    </Grid>
-  ))}
-</Grid>
+          {clientes.map((cliente: any) => (
+            <Grid item xs={12} md={6} key={cliente._id}>
+              <StyledCard>
+                <CardContent>
+                  <Typography variant="h6" component="div" gutterBottom>
+                    {cliente.nombre_cliente}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Email: {cliente.email_cliente}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Celular: {cliente.celular_cliente}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    style={{
+                      color: cliente.activo_cliente ? "#4caf50" : "#f44336", // Verde si está activo, rojo si está inactivo
+                      fontWeight: "bold"
+                    }}
+                  >
+                    {cliente.activo_cliente ? "Activo" : "Desactivado"}
+                  </Typography>
+                  <UpdateButton onClick={() => handleOpenModal(cliente)}>
+                    Actualizar
+                  </UpdateButton>
+                  {cliente.activo_cliente ? (
+                    <DeactivateButton onClick={() => handleDeactivate(cliente._id)}>
+                      Desactivar
+                    </DeactivateButton>
+                  ) : (
+                    <ActivateButton onClick={() => handleActivate(cliente._id)}>
+                      Activar
+                    </ActivateButton>
+                  )}
+                  <DeleteButton onClick={() => handleDelete(cliente._id)}>
+                    Eliminar
+                  </DeleteButton>
+                </CardContent>
+              </StyledCard>
+            </Grid>
+          ))}
+        </Grid>
       </section>
-  
+
       <Dialog open={openModal} onClose={handleCloseModal}>
-  <DialogTitle>{actionType === 'create' ? "Crear Cliente" : "Actualizar Cliente"}</DialogTitle>
-  <DialogContent>
-  
-    <TextField
-      fullWidth
-      margin="normal"
-      label="Nombre"
-      name="nombre_cliente"
-      value={formValues.nombre_cliente}
-      onChange={handleInputChange}
-    />
-    <TextField
-      fullWidth
-      margin="normal"
-      label="Email"
-      name="email_cliente"
-      value={formValues.email_cliente}
-      onChange={handleInputChange}
-    />
-    <TextField
-      fullWidth
-      margin="normal"
-      label="Celular"
-      name="celular_cliente"
-      value={formValues.celular_cliente}
-      onChange={handleInputChange}
-    />
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={handleCloseModal} color="secondary">Cancelar</Button>
-    <Button onClick={handleSaveCliente} color="primary">
-      {actionType === 'create' ? "Crear" : "Actualizar"}
-    </Button>
-  </DialogActions>
-</Dialog>
-  
+        <DialogTitle>{actionType === 'create' ? "Crear Cliente" : "Actualizar Cliente"}</DialogTitle>
+        <DialogContent>
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Número de Identificación"
+            name="numero_identificacion"
+            value={formValues.numero_identificacion}
+            onChange={handleInputChange}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Nombre"
+            name="nombre_cliente"
+            value={formValues.nombre_cliente}
+            onChange={handleInputChange}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Email"
+            name="email_cliente"
+            value={formValues.email_cliente}
+            onChange={handleInputChange}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Celular"
+            name="celular_cliente"
+            value={formValues.celular_cliente}
+            onChange={handleInputChange}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal} color="secondary">Cancelar</Button>
+          <Button onClick={handleSaveCliente} color="primary">
+            {actionType === 'create' ? "Crear" : "Actualizar"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       {/* Snackbar para mensajes */}
       <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar}>
         <Alert severity={errorMessage ? "error" : "success"} onClose={handleCloseSnackbar}>
