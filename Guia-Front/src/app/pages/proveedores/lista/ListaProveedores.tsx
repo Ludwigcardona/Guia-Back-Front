@@ -20,77 +20,77 @@ import { styled } from "@mui/system";
 
 // Estilo para las tarjetas dinámicas
 const StyledCard = styled(Card)(({ theme }) => ({
-    transition: "transform 0.3s ease, box-shadow 0.3s ease",
-    "&:hover": {
-      transform: "translateY(-8px)", // Movimiento suave al hover
-    },
-    width: "100%", // Ancho completo en pantallas pequeñas
-    marginBottom: theme.spacing(2),
-    borderRadius: "20px", // Bordes más redondeados
-    backgroundColor: "#f9f9f9", // Fondo suave para las tarjetas
-    padding: theme.spacing(3), // Espaciado interno
-    [theme.breakpoints.up("md")]: {
-      width: "75%", // Ancho más grande en pantallas medianas y grandes
-      margin: "auto", // Centrado horizontal en pantallas más grandes
-    },
-  }));
-  
-  // Estilo para los botones de acción personalizados
-  const ActionButton = styled(Button)(({ theme }) => ({
-    margin: theme.spacing(1),
-    padding: theme.spacing(1.5),
-    fontSize: "0.875rem",
-    fontWeight: "bold",
-    textTransform: "none",
-    borderRadius: "10px",
-    transition: "background-color 0.3s ease",
-  }));
-  
-  const ActivateButton = styled(ActionButton)({
-    backgroundColor: "#4caf50",
-    color: "#fff",
-    "&:hover": {
-      backgroundColor: "#388e3c",
-    },
+  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+  "&:hover": {
+    transform: "translateY(-8px)", // Movimiento suave al hover
+  },
+  width: "100%", // Ancho completo en pantallas pequeñas
+  marginBottom: theme.spacing(2),
+  borderRadius: "20px", // Bordes más redondeados
+  backgroundColor: "#f9f9f9", // Fondo suave para las tarjetas
+  padding: theme.spacing(3), // Espaciado interno
+  [theme.breakpoints.up("md")]: {
+    width: "75%", // Ancho más grande en pantallas medianas y grandes
+    margin: "auto", // Centrado horizontal en pantallas más grandes
+  },
+}));
+
+// Estilo para los botones de acción personalizados
+const ActionButton = styled(Button)(({ theme }) => ({
+  margin: theme.spacing(1),
+  padding: theme.spacing(1.5),
+  fontSize: "0.875rem",
+  fontWeight: "bold",
+  textTransform: "none",
+  borderRadius: "10px",
+  transition: "background-color 0.3s ease",
+}));
+
+const ActivateButton = styled(ActionButton)({
+  backgroundColor: "#4caf50",
+  color: "#fff",
+  "&:hover": {
+    backgroundColor: "#388e3c",
+  },
+});
+
+const DeactivateButton = styled(ActionButton)({
+  backgroundColor: "#ff9800",
+  color: "#fff",
+  "&:hover": {
+    backgroundColor: "#f57c00",
+  },
+});
+
+const DeleteButton = styled(ActionButton)({
+  backgroundColor: "#f44336",
+  color: "#fff",
+  "&:hover": {
+    backgroundColor: "#d32f2f",
+  },
+});
+
+const UpdateButton = styled(ActionButton)({
+  backgroundColor: "#2196f3",
+  color: "#fff",
+  "&:hover": {
+    backgroundColor: "#1976d2",
+  },
+});
+
+const ProveedorLista = () => {
+  const [proveedores, setProveedores] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
+  const [formValues, setFormValues] = useState({
+    nombre_proveedor: '',
+    email_proveedor: '',
+    celular_proveedor: '',
+    activo_proveedor: true,
   });
-  
-  const DeactivateButton = styled(ActionButton)({
-    backgroundColor: "#ff9800",
-    color: "#fff",
-    "&:hover": {
-      backgroundColor: "#f57c00",
-    },
-  });
-  
-  const DeleteButton = styled(ActionButton)({
-    backgroundColor: "#f44336",
-    color: "#fff",
-    "&:hover": {
-      backgroundColor: "#d32f2f",
-    },
-  });
-  
-  const UpdateButton = styled(ActionButton)({
-    backgroundColor: "#2196f3",
-    color: "#fff",
-    "&:hover": {
-      backgroundColor: "#1976d2",
-    },
-  });
-  
-  const ProveedorLista = () => {
-    const [proveedores, setProveedores] = useState([]);
-    const [openModal, setOpenModal] = useState(false);
-    const [formValues, setFormValues] = useState({
-      nombre_proveedor: '',
-      email_proveedor: '',
-      celular_proveedor: '',
-      activo_proveedor: true,
-    });
-    const [selectedProveedor, setSelectedProveedor] = useState<any>(null);
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
-    const [actionType, setActionType] = useState<'create' | 'update'>('create');
+  const [selectedProveedor, setSelectedProveedor] = useState<any>(null);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [actionType, setActionType] = useState<'create' | 'update'>('create');
 
   useEffect(() => {
     fetchProveedores();
@@ -111,7 +111,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
 
   const handleOpenModal = (proveedor: any = null) => {
     setSelectedProveedor(proveedor);
-  
+
     if (proveedor) {
       setFormValues({
         nombre_proveedor: proveedor.nombre_proveedor,
@@ -129,7 +129,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
       });
       setActionType('create');
     }
-  
+
     setOpenModal(true);
   };
 
@@ -147,8 +147,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   };
 
   const handleSaveProveedor = async () => {
-    try 
-    {
+    try {
       let url;
       let method;
       if (actionType === 'create') {
@@ -158,7 +157,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
         url = `http://localhost:2000/api/proveedores/update/${selectedProveedor._id}`;
         method = 'PUT';
       }
-  
+
       const response = await fetch(`${url}`, {
         method: method,
         headers: {
@@ -166,12 +165,12 @@ const StyledCard = styled(Card)(({ theme }) => ({
         },
         body: JSON.stringify(formValues),
       });
-  
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Error al guardar el proveedor');
       }
-  
+
       fetchProveedores();
       handleCloseModal();
     } catch (error) {
@@ -189,7 +188,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
       console.error("Error al activar el proveedor:", error);
     }
   };
-  
+
   const handleDeactivate = async (id: string) => {
     try {
       await fetch(`http://localhost:2000/api/proveedores/deactive/${id}`, { method: 'PUT' });
@@ -214,7 +213,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   };
 
   return (
-    <Container maxWidth="lg" style={{marginTop: "100px"}}>
+    <Container maxWidth="lg" style={{ marginTop: "100px" }}>
       <section style={{
         // Gradiente de colores
         background: "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)",
@@ -225,56 +224,56 @@ const StyledCard = styled(Card)(({ theme }) => ({
         // Color del texto
         color: "#fff"
       }}>
-      
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => handleOpenModal()}
-        style={{ marginBottom: "30px" }} // Espaciado adicional
-      >
-        Crear Proveedor
-      </Button>
 
-      <Grid container spacing={3}>
-        {proveedores.map((proveedor: any) => (
-          <Grid item xs={12} md={6} key={proveedor._id}>
-            <StyledCard>
-              <CardContent>
-                <Typography variant="h5" component="div" gutterBottom>
-                  {proveedor.nombre_proveedor}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  Email: {proveedor.email_proveedor}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  Celular: {proveedor.celular_proveedor}
-                </Typography>
-                <Typography variant="body2" style={{
-                  color: proveedor.activo_proveedor ? '#4caf50' : '#f44336', // Verde si está activo, rojo si está inactivo
-                  fontWeight: 'bold'
-                }}>
-                  {proveedor.activo_proveedor ? 'Activo' : 'Desactivado'}
-                </Typography>
-                <UpdateButton onClick={() => handleOpenModal(proveedor)}>
-                  Actualizar
-                </UpdateButton>
-                {proveedor.activo_proveedor ? (
-                  <DeactivateButton onClick={() => handleDeactivate(proveedor._id)}>
-                    Desactivar
-                  </DeactivateButton>
-                ) : (
-                  <ActivateButton onClick={() => handleActivate(proveedor._id)}>
-                    Activar
-                  </ActivateButton>
-                )}
-                <DeleteButton onClick={() => handleDelete(proveedor._id)}>
-                  Eliminar
-                </DeleteButton>
-              </CardContent>
-            </StyledCard>
-          </Grid>
-        ))}
-      </Grid>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => handleOpenModal()}
+          style={{ marginBottom: "30px" }} // Espaciado adicional
+        >
+          Crear Proveedor
+        </Button>
+
+        <Grid container spacing={3}>
+          {proveedores.map((proveedor: any) => (
+            <Grid item xs={12} md={6} key={proveedor._id}>
+              <StyledCard>
+                <CardContent>
+                  <Typography variant="h5" component="div" gutterBottom>
+                    {proveedor.nombre_proveedor}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Email: {proveedor.email_proveedor}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Celular: {proveedor.celular_proveedor}
+                  </Typography>
+                  <Typography variant="body2" style={{
+                    color: proveedor.activo_proveedor ? '#4caf50' : '#f44336', // Verde si está activo, rojo si está inactivo
+                    fontWeight: 'bold'
+                  }}>
+                    {proveedor.activo_proveedor ? 'Activo' : 'Desactivado'}
+                  </Typography>
+                  <UpdateButton onClick={() => handleOpenModal(proveedor)}>
+                    Actualizar
+                  </UpdateButton>
+                  {proveedor.activo_proveedor ? (
+                    <DeactivateButton onClick={() => handleDeactivate(proveedor._id)}>
+                      Desactivar
+                    </DeactivateButton>
+                  ) : (
+                    <ActivateButton onClick={() => handleActivate(proveedor._id)}>
+                      Activar
+                    </ActivateButton>
+                  )}
+                  <DeleteButton onClick={() => handleDelete(proveedor._id)}>
+                    Eliminar
+                  </DeleteButton>
+                </CardContent>
+              </StyledCard>
+            </Grid>
+          ))}
+        </Grid>
       </section>
 
       <Dialog open={openModal} onClose={handleCloseModal}>
@@ -326,7 +325,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
           {errorMessage || "Operación exitosa"}
         </Alert>
       </Snackbar>
-      
+
     </Container>
   );
 };
