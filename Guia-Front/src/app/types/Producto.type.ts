@@ -1,5 +1,7 @@
+// src/types/productos.ts
+
 import { Clientes } from "./Clientes.type";
-import { Proveedores } from "./Proovedor.type";
+import { Proveedores } from "./Proveedor.type";
 
 export interface Productos {
   _id: string;

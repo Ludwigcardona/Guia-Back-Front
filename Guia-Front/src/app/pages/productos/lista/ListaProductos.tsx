@@ -1,4 +1,5 @@
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
+// src/components/ProductoLista.tsx
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -26,7 +27,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/system';
 import { Productos } from '@/app/types/Producto.type';
-//import { Proveedores } from '@/app/types/Proveedor.type';
+import { Proveedores } from '@/app/types/Proveedor.type';
 import { Clientes } from '@/app/types/Clientes.type';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
@@ -40,7 +41,6 @@ import Checkbox from '@mui/material/Checkbox';
 import { SelectChangeEvent } from '@mui/material/Select';
 import Swal from 'sweetalert2';
 import 'sweetalert2/src/sweetalert2.scss';
-import { Proveedores } from '@/app/types/Proovedor.type';
 
 
 
@@ -54,11 +54,43 @@ const ActionButton = styled(Button)(({ theme }) => ({
   borderRadius: '10px',
 }));
 
+const AddButton = styled(ActionButton)(({ theme }) => ({
+  backgroundColor: '#6a11cb',
+  color: '#fff',
+  '&:hover': {
+    backgroundColor: '#5a0cb2',
+  },
+}));
 
+const DeleteButton = styled(ActionButton)(({ theme }) => ({
+  backgroundColor: '#d32f2f',
+  color: '#fff',
+  '&:hover': {
+    backgroundColor: '#b71c1c',
+  },
+}));
+
+const EditButton = styled(ActionButton)(({ theme }) => ({
+  backgroundColor: '#1976d2',
+  color: '#fff',
+  '&:hover': {
+    backgroundColor: '#115293',
+  },
+}));
+
+
+
+// Estilo para las filas interactivas
+const InteractiveTableRow = styled(TableRow)({
+  cursor: 'pointer',
+  '&:hover': {
+    backgroundColor: '#f5f5f5',
+  },
+});
 
 // Estilo del modal
 const style = {
-  position: 'absolute' as 'absolute',
+  position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
@@ -274,7 +306,7 @@ const ProductoLista: React.FC = () => {
   };
 
   const toggleActivo = async (id: string, activo: boolean) => {
-    const response = await fetch(`http://localhost:2000/api/productos/${activo ? 'deactive' : 'active'}/${id}`, {
+    const response = await fetch(`http://localhost:2000/api/productos/${activo ? 'deactivate' : 'active'}/${id}`, {
       method: 'PUT',
     });
 

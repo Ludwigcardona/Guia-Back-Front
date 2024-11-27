@@ -1,7 +1,8 @@
+
 export interface Clientes {
     id_cliente: string;
     nombre_cliente: string;
-    email_cliente: string;
-    celular_cliente: string;
-    activo_cliente?: boolean;
+    correo_electronico: string;
+    telefono: string;
+    cliente_activo?: boolean;
   }

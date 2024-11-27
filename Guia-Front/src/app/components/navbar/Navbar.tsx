@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useState } from "react";
 import {
   AppBar,
@@ -34,74 +33,95 @@ const SidebarHeader = styled(Typography)({
   marginBottom: "1rem",
   color: "#fff", // Cambiado a blanco para mejor contraste
 });
-const SidebarItem = styled(ListItem)({
-    padding: "15px 10px",
-    margin: "10px 0",
-    borderRadius: "10px", // Bordes más redondeados
-    transition: "background-color 0.3s ease, transform 0.3s ease",
-    "&:hover": {
-      backgroundColor: "rgba(255, 255, 255, 0.1)", // Fondo semi-transparente al pasar el ratón
-      transform: "translateY(-3px)", // Efecto de elevación sutil
-    },
-  });
-  
-  const SidebarDivider = styled(Divider)({
-    backgroundColor: "rgba(255, 255, 255, 0.2)", // Divisor semi-transparente
-    margin: "10px 0",
-  });
 
-  const Navbar = () => {
+const SidebarItem = styled(ListItem)({
+  padding: "15px 10px",
+  margin: "10px 0",
+  borderRadius: "10px", // Bordes más redondeados
+  transition: "background-color 0.3s ease, transform 0.3s ease",
+  "&:hover": {
+    backgroundColor: "rgba(255, 255, 255, 0.1)", // Fondo semi-transparente al pasar el ratón
+    transform: "translateY(-3px)", // Efecto de elevación sutil
+  },
+});
+
+const SidebarDivider = styled(Divider)({
+  backgroundColor: "rgba(255, 255, 255, 0.2)", // Divisor semi-transparente
+  margin: "10px 0",
+});
+
+const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
   
     const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
-        event.type === 'keydown' &&
-        ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')
+        event.type === "keydown" &&
+        ((event as React.KeyboardEvent).key === "Tab" || (event as React.KeyboardEvent).key === "Shift")
       ) {
         return;
       }
-  
       setIsOpen(open);
     };
   
     const sidebarContent = (
-      <SidebarContainer role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
+      <SidebarContainer
+        role="presentation"
+        onClick={toggleDrawer(false)}
+        onKeyDown={toggleDrawer(false)}
+      >
+        <SidebarHeader variant="h6">Navegación</SidebarHeader>
         <List>
-          <SidebarHeader variant="h6">Navegación</SidebarHeader>
-          <Link href="/pages" passHref style={{ color: 'inherit', textDecoration: 'none', width: '100%' }}>
-            <ListItemText primary="Home" />
-          </Link>
-          <Link href="/pages/proveedores" passHref style={{ color: 'inherit', textDecoration: 'none', width: '100%' }}>
-            <ListItemText primary="Proveedores" />
-          </Link>
-          <Link href="/pages/clientes" passHref style={{ color: 'inherit', textDecoration: 'none', width: '100%' }}>
-            <ListItemText primary="Clientes" />
-          </Link>
-          <Link href="/pages/productos" passHref style={{ color: 'inherit', textDecoration: 'none', width: '100%' }}>
-            <ListItemText primary="Productos" />
-          </Link>
+          <SidebarItem>
+            <Link href="/pages" passHref style={{ color: "inherit", textDecoration: "none", width: "100%" }}>
+              <ListItemText primary="Home" />
+            </Link>
+          </SidebarItem>
+          <SidebarItem>
+            <Link href="/pages/proveedores" passHref style={{ color: "inherit", textDecoration: "none", width: "100%" }}>
+              <ListItemText primary="Proveedores" />
+            </Link>
+          </SidebarItem>
+          <SidebarItem>
+            <Link href="/pages/clientes" passHref style={{ color: "inherit", textDecoration: "none", width: "100%" }}>
+              <ListItemText primary="Clientes" />
+            </Link>
+          </SidebarItem>
+          <SidebarItem>
+            <Link href="/pages/productos" passHref style={{ color: "inherit", textDecoration: "none", width: "100%" }}>
+              <ListItemText primary="Productos" />
+            </Link>
+          </SidebarItem>
         </List>
         <SidebarDivider />
-        <Typography variant="caption" sx={{ textAlign: 'center', display: 'block', marginTop: '1rem', opacity: 0.7 }}>
-          Sistema de Gestión 2024
+        <Typography
+          variant="caption"
+          sx={{
+            textAlign: "center",
+            display: "block",
+            marginTop: "1rem",
+            opacity: 0.7,
+          }}
+        >
+          Sistema de Gestión © 2024
         </Typography>
       </SidebarContainer>
     );
- 
-  return (
-    <>
-      <AppBar position="fixed" sx={{ background: "transparent", boxShadow: "none" }}>
-        <Toolbar>
-          <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
-            <MenuIcon sx={{ color: "#fff" }} />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <Drawer anchor="left" open={isOpen} onClose={toggleDrawer(false)}>
-        {sidebarContent}
-      </Drawer>
-    </>
-  );
-};
-
-export default Navbar;
+  
+    return (
+      <>
+        <AppBar position="fixed" sx={{ background: "transparent", boxShadow: "none" }}>
+          <Toolbar>
+            <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
+              <MenuIcon sx={{ color: "#fff" }} />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <Drawer anchor="left" open={isOpen} onClose={toggleDrawer(false)}>
+          {sidebarContent}
+        </Drawer>
+      </>
+    );
+  };
+  
+  export default Navbar;
+  
