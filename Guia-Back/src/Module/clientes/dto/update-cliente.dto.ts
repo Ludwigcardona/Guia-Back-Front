@@ -1,23 +1,23 @@
-import { IsOptional, IsString, IsEmail, IsBoolean } from "class-validator";
+import { IsNotEmpty, IsString, IsBoolean } from "class-validator";
 
-export class UpdateClienteDto {
-  @IsOptional()
+export class UpdateClientesDto {
+
+  @IsNotEmpty()
+  @IsString()
+  numero_identificacion?: string;
+
+  @IsNotEmpty()
   @IsString()
   nombre_cliente?: string;
 
-  @IsOptional()
-  @IsEmail()
-  correo_cliente?: string;
-
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  telefono_cliente?: string;
+  email_cliente?: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  direccion_cliente?: string;
+  celular_cliente?: string;
 
-  @IsOptional()
   @IsBoolean()
   activo_cliente?: boolean;
 }

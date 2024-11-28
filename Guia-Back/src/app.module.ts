@@ -6,10 +6,10 @@ import { ProductosModule } from './module/productos/productos.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb+srv://ludwigcardona29:7VzmvhNCAAxrKxIf@cluster0.epo6e.mongodb.net/Guia#1?retryWrites=true&w=majority&appName=cluster0'),
+    MongooseModule.forRoot('mongodb://localhost:27017/j'),
     ProveedoresModule,
     ClientesModule,
     ProductosModule,
   ],
 })
-export class AppModule {}
+export class AppModule { }  

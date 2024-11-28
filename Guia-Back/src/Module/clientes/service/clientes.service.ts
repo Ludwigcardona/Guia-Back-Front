@@ -1,90 +1,81 @@
+
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-
-// Importamos nuestro esquema
 import { Clientes } from '../schema/cliente.schema';
-
-// Importamos nuestros DTOs
-import { CreateClienteDto } from '../dto/create-cliente.dto';
-import { UpdateClienteDto } from '../dto/update-cliente.dto';
+import { CreateClientesDto } from '../dto/create-cliente.dto';
+import { UpdateClientesDto } from '../dto/update-cliente.dto';
 
 @Injectable()
 export class ClientesService {
-  async updatePartial(id: string, updateCliente: UpdateClienteDto): Promise<Clientes> {
-    const updatePartialCliente = await this.clienteModel.findByIdAndUpdate(id, updateCliente, { new: true }).exec();
-  
-    if (!updatePartialCliente) {
-      throw new NotFoundException(`Proveedor con Id ${id} no se encontró`);
+  constructor(@InjectModel(Clientes.name) private clientesModel: Model<Clientes>) { }
+
+  // Método para crear un nuevo cliente
+  async createCliente(createClientesDto: CreateClientesDto): Promise<Clientes> {
+    const createCliente = new this.clientesModel(createClientesDto);
+    return createCliente.save();
+  }
+
+  // Método para obtener todos los clientes
+  async findAll(): Promise<Clientes[]> {
+    const findAllClientes = await this.clientesModel.find().exec();
+    return findAllClientes;
+  }
+
+  // Método para obtener un cliente por ID
+  async findOne(id: string): Promise<Clientes> {
+    const findOneCliente = await this.clientesModel.findById(id).exec();
+    if (!findOneCliente) {
+      throw new NotFoundException(`Cliente con ID ${id} no encontrado`);
     }
-  
+    return findOneCliente;
+  }
+
+  // Método para actualizar un cliente
+  async update(id: string, updateClientesDto: UpdateClientesDto): Promise<Clientes> {
+    const updateCliente = await this.clientesModel.findByIdAndUpdate(id, updateClientesDto, { new: true }).exec();
+    if (!updateCliente) {
+      throw new NotFoundException(`Cliente con ID ${id} no encontrado`);
+    }
+    return updateCliente;
+  }
+
+  // Método para actualizar parcialmente un cliente
+  async updatePartial(id: string, updateClientesDto: Partial<UpdateClientesDto>): Promise<Clientes> {
+    const updatePartialCliente = await this.clientesModel.findByIdAndUpdate(id, updateClientesDto, { new: true }).exec();
+    if (!updatePartialCliente) {
+      throw new NotFoundException(`Cliente con ID ${id} no encontrado`);
+    }
     return updatePartialCliente;
   }
 
-  constructor(@InjectModel(Clientes.name) private clienteModel: Model<Clientes>) {}
-
-  // Crear un nuevo cliente
-  async createCliente(createClienteDto: CreateClienteDto): Promise<Clientes> {
-    const nuevoCliente = new this.clienteModel(createClienteDto);
-    return nuevoCliente.save();
-  }
-
-  // Obtener todos los clientes
-  async findAll(): Promise<Clientes[]> {
-    return this.clienteModel.find().exec();
-  }
-
-  // Obtener un cliente por ID
-  async findOne(id: string): Promise<Clientes> {
-    const cliente = await this.clienteModel.findById(id).exec();
-
-    if (!cliente) {
-      throw new NotFoundException(`Cliente con ID ${id} no encontrado`);
-    }
-
-    return cliente;
-  }
-
-  // Actualizar un cliente (completo)
-  async update(id: string, updateClienteDto: UpdateClienteDto): Promise<Clientes> {
-    const clienteActualizado = await this.clienteModel
-      .findByIdAndUpdate(id, updateClienteDto, { new: true })
+  async active(id: string): Promise<void> {
+    const result = await this.clientesModel.findByIdAndUpdate(
+      id,
+      { activo_cliente: true },
+      { new: true })
       .exec();
-
-    if (!clienteActualizado) {
-      throw new NotFoundException(`Cliente con ID ${id} no encontrado`);
-    }
-
-    return clienteActualizado;
-  }
-
-  // Activar un cliente
-  async activate(id: string): Promise<void> {
-    const result = await this.clienteModel
-      .findByIdAndUpdate(id, { activo: true }, { new: true })
-      .exec();
-
     if (!result) {
       throw new NotFoundException(`Cliente con ID ${id} no encontrado`);
     }
   }
 
-  // Desactivar un cliente
+  // Método para desactivar un cliente
   async deactivate(id: string): Promise<void> {
-    const result = await this.clienteModel
-      .findByIdAndUpdate(id, { activo: false }, { new: true })
-      .exec();
-
+    const result = await this.clientesModel.findByIdAndUpdate(
+      id,
+      { activo_cliente: false }, // Actualiza el campo y lo pasa a falso
+      { new: true } // Retorna el documento actualizado
+    ).exec();
     if (!result) {
       throw new NotFoundException(`Cliente con ID ${id} no encontrado`);
     }
   }
 
-  // Eliminar un cliente
+  // Método para eliminar un cliente
   async delete(id: string): Promise<void> {
-    const clienteEliminado = await this.clienteModel.findByIdAndDelete(id);
-
-    if (!clienteEliminado) {
+    const deleteCliente = await this.clientesModel.findByIdAndDelete(id).exec();
+    if (!deleteCliente) {
       throw new NotFoundException(`Cliente con ID ${id} no encontrado`);
     }
   }

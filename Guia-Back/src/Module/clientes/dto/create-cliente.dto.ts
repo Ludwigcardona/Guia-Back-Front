@@ -1,23 +1,23 @@
-import { IsNotEmpty, IsString, IsEmail, IsOptional, IsBoolean } from "class-validator";
+import { IsNotEmpty, IsString, IsBoolean} from "class-validator";
 
-export class CreateClienteDto {
-  @IsNotEmpty()
-  @IsString()
-  nombre_cliente: string;
+export class CreateClientesDto{
 
-  @IsNotEmpty()
-  @IsEmail()
-  correo_cliente: string;
+    @IsNotEmpty()
+    @IsString()
+    numero_identificacion: string;
 
-  @IsOptional()
-  @IsString()
-  telefono_cliente?: string;
+    @IsNotEmpty()
+    @IsString()
+    nombre_cliente: string;
 
-  @IsOptional()
-  @IsString()
-  direccion_cliente?: string;
+    @IsNotEmpty()
+    @IsString()
+    email_cliente: string;
 
-  @IsOptional()
-  @IsBoolean()
-  activo_cliente?: boolean;
+    @IsNotEmpty()
+    @IsString()
+    celular_cliente: string;
+
+    @IsBoolean()
+    activo_cliente?: boolean;
 }
